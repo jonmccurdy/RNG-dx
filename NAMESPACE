@@ -1,0 +1,3 @@
+useDynLib(RNG.generators , .registration=TRUE)
+exportPattern("^[[:alpha:]]+") 
+importFrom(Rcpp, evalCpp)
