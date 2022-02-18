@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-#' DX_init()
+#' dx_init()
 #' 
 
 dx_init <- function(K=47, S=1) {
