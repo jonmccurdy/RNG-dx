@@ -79,6 +79,11 @@ void dx_2_fast(){
   res = (double) XX[I_X] * IPP;
 }
 
+void lcg_basic(){
+  seed[2] = seed[2] + 1;
+  res = seed[2] * 2.32830643653869e-10;
+}
+
 void (*dx_gen)();
 
 void generator_type(){
@@ -92,6 +97,8 @@ void generator_type(){
   case 4: dx_gen=&dx_4;
     break;
   case 5: dx_gen=&dx_2_fast;
+    break;
+  case 6: dx_gen=&lcg_basic;
     break;
   default: dx_gen=&dx_1;
   Rcerr << "The value of 'S' that was chosen is not compatible with this package. \nBy default, a DX-" << K_X<< "-1 generator was chosen.\n";
