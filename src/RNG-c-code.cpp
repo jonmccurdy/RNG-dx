@@ -7,7 +7,7 @@ using namespace Rcpp;
 #define K_MAX	3500
 #define PP 2147483647  //2^31-1
 #define IPP 4.6566129e-10
-static long long B_X1 = 536869888; // will change based on K, S
+static long long B_X1 = 536869888; // will change based on K, S- can be done more efficiently
 static long long B_X2 = 65011712;
 static long long B_X3 = 67633152;
 static long long B_X4 = 67108736;
@@ -65,6 +65,20 @@ void dx_4(){
   res= (double) XX[I_X] * IPP;
 }
 
+#define B20(x) ( ((x)>>11) + ((x)<<20)&PP ) 
+#define B9(x) ( ((x)>>22) + ((x)<<9) &PP )
+unsigned long S ;
+
+void dx_2_fast(){
+  K_X = seed[0];
+  S_X = seed[1];
+  int II0 = I_X;
+  if(++I_X >= K_X)  I_X = 0;     /*wrap around running index */
+  S = MODP(XX[I_X] + XX[II0]);
+  XX[I_X] = MODP(B20(S) + B9(S));
+  res = (double) XX[I_X] * IPP;
+}
+
 void (*dx_gen)();
 
 void generator_type(){
@@ -76,6 +90,8 @@ void generator_type(){
   case 3: dx_gen=&dx_3;
     break;
   case 4: dx_gen=&dx_4;
+    break;
+  case 5: dx_gen=&dx_2_fast;
     break;
   default: dx_gen=&dx_1;
   Rcerr << "The value of 'S' that was chosen is not compatible with this package. \nBy default, a DX-" << K_X<< "-1 generator was chosen.\n";

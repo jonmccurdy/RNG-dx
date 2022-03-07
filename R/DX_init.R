@@ -12,9 +12,9 @@
 
 dx_init <- function(K=47, S=1) {
   RNGkind("user")
-  .Random.seed[[2]] <- K
-  .Random.seed[[3]] <- S
+  .Random.seed[2] <- K
+  .Random.seed[3] <- S
   .Random.seed <<- as.integer(.Random.seed)
-  a <- runif(1)
+  invisible(runif(1))
   set.seed(.Random.seed[4])
 }
